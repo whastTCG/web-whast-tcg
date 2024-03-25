@@ -1,0 +1,138 @@
+
+  .layaout{
+      width: 100%;
+      height: auto;
+      display: grid;
+      grid-template-areas: 
+      "header header header header"
+      "nav nav nav nav"
+      "banner banner banner banner"
+      "content content content content"
+      "footer footer footer footer";
+      grid-template-rows: auto auto auto auto auto;
+      grid-template-columns: 100%;
+      
+    
+    }
+
+
+  .header{
+    grid-area: header;
+    border: 1px solid  blue;
+    font-style:unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #302c2e;
+    color: lightgray
+  }
+
+  .gatoql {
+    width: 35px;
+    margin-left: 10px;
+    
+  }
+  .titulo{
+    width: 200px;
+    height: 50px;
+  }
+
+  .AppBar{
+    grid-area: nav;
+    
+    background-color: lightgray;
+  }
+
+
+  .app-bar-botton-conten{
+    display: flex;
+    
+    justify-content: flex-start;
+    align-items: flex-start;
+  
+    
+  }
+  
+  .banner{
+    grid-area: banner;
+  
+
+  }
+
+  .content {
+    display: grid;
+    grid-area: content;
+    grid-template-areas:
+        "buscador contenedor contenedor contenedor"
+        "paginacion paginacion paginacion paginacion";
+    grid-template-columns: 1fr 9.7fr 1fr 1fr ; /* Fracciones para las columnas */
+    grid-template-rows: auto auto; /* Altura automática para las filas */
+    background-color: lightgray;
+    
+}
+
+.content-individual {
+  display: grid;
+  grid-area: content;
+  grid-template-areas:
+      "buscador contenedor contenedor contenedor"
+      "paginacion paginacion paginacion paginacion";
+
+  background-color: lightgray;
+  
+}
+
+
+  .content-2{
+    display: grid;
+    grid-area: content;
+    grid-template-areas:"contenedor";
+    background-color: lightgray;
+  }
+
+  @media(max-width: 1024px){
+    .content{
+      display: grid;
+      grid-area: content;
+      grid-template-areas:"buscador contenedor"
+                          "paginacion paginacion";
+      grid-template-rows: auto auto;
+      grid-template-columns: 1fr 4fr;
+      background-color: lightgray;
+      
+    }
+  }
+  @media(max-width: 768px){
+    .content{
+      display: flex;
+      flex-direction: column;
+      background-color: lightgray;
+      
+      
+      
+      width: 100vw;
+    }
+    .container-card{
+      justify-content: center;
+      ;
+    }
+  }
+
+
+  .footer{
+    grid-area: footer;
+    background-color: lightgray;
+    border: 1px solid black;
+    
+  }
+
+  .banner{
+    display: flex;
+    justify-content: center;
+    background-color: lightgray;
+    
+  }
+  .banner > img{
+    
+    width: 100%;
+  }

@@ -1,0 +1,92 @@
+.container-carta-individual{
+    grid-area: contenedor;
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+    
+}
+
+
+
+
+
+
+
+
+@media(max-width: 1024px){
+    .img-container{
+    
+        margin-top:0px;
+    }
+  
+}
+
+@media( max-width: 425px){
+    .container-carta-individual{
+        grid-area: contenedor;
+        display: flex;
+        flex-direction: column-reverse;
+        margin-top:0px;
+    }
+
+    .datos-carta{
+      
+      margin: 10px;
+      margin-bottom: 20px;
+    }
+
+    .img-container{
+        justify-content: center;
+        display: flex;
+        border: 1px solid green;
+        margin-bottom: 20px;
+    }
+   
+}
+@media(min-width: 768px){
+    .datos-carta{
+        margin-left: 150px;
+    }
+}
+
+
+
+.datos-carta span{
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    display: block;
+    font-family: var(--main-font);
+    line-height: 1;
+}
+
+.datos-carta h1{
+  margin-top: 1px;
+}
+
+.datos-carta h2{
+    margin-top: 1px;
+    color: #0046be;
+}
+
+.datos-carta h5{
+    margin-top: auto;
+    color: black;
+}
+.fuera-stock-label{
+    color: rgb(73, 14, 14)
+}
+
+
+
+/* .stock-field::-webkit-outer-spin-button,
+::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield;
+
+} */
