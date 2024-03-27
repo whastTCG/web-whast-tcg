@@ -1,0 +1,8 @@
+.cartas{
+    
+    grid-area: contenedor;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: lightgray;
+}
+
