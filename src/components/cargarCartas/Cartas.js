@@ -207,7 +207,7 @@ export function Cartas() {
                                         ) : (
 
                                             <CardContent sx={{ alignContent: "center", display: "flex" }}>
-                                                <Button sx={{ width: 200, height: 40 }} variant="contained" onClick={(e) => anadirAlCarro(e, item)}>
+                                                <Button sx={{ width: 220, height: 40 }} variant="contained" onClick={(e) => anadirAlCarro(e, item)}>
                                                     Anadir al carro
                                                 </Button>
 
