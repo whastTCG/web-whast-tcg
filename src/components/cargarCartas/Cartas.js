@@ -212,11 +212,7 @@ export function Cartas() {
 
                                         ) : (
 
-<<<<<<< HEAD
                                             <CardContent sx={{ justifyContent: "center", display: "flex" }}>
-=======
-                                            <CardContent sx={{ alignContent: "center", display: "flex" }}>
->>>>>>> 9b6c45cabc4ec62e8d2510fad1417d59ff58d539
                                                 <Button sx={{ width: 220, height: 40 }} variant="contained" onClick={(e) => anadirAlCarro(e, item)}>
                                                     Anadir al carro
                                                 </Button>
