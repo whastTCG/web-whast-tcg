@@ -25,7 +25,7 @@ export const CartaIndividual = () => {
 
   const { setCarrito } = useContext(Context);
 
-  const [tasaDeCambio, setTasaDeCambio] = useState(1000);
+  const [ setTasaDeCambio] = useState(1000);
 
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -48,6 +48,7 @@ export const CartaIndividual = () => {
   };
 
   const { idCarta } = useParams();
+  
   // const { cartasBLMR, setCartasBLMR } = useContext(Context);
   useEffect(() => {
     const traerCarta = async (id) => {
@@ -186,7 +187,7 @@ export const CartaIndividual = () => {
           <Box display={{ sm: 'none', xs: 'flex' }} flexDirection={'column'} alignItems={'center'} >
             <Box display="flex" flexDirection="column" alignItems="center" marginBottom={1}>
               <Typography variant="h6">
-                Precio: {carta.cardPrice}
+                Precio:{calcularPrecioCLP(carta.cardPrice)}
               </Typography>
               <Box display="flex" alignItems="center">
                 <Typography variant="body2" sx={{ marginRight: '8px' }}>
@@ -214,7 +215,7 @@ export const CartaIndividual = () => {
 
                 <Typography sx={{ width: { md: 300 } }} variant='h4'>{carta.cardText}</Typography>
                 <Box display={{ xs: 'none', sm: 'block' }}>
-                  <span>Precio</span>
+                  <span>Precioo</span>
                   <h2>{calcularPrecioCLP(carta.cardPrice)}</h2>
                 </Box>
 

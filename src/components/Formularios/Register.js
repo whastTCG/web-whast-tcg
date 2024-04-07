@@ -84,7 +84,7 @@ export function Register() {
         setSave(true);
         setTimeout(() => {
           navigate('/login');
-        }, 2000);
+        }, 10000);
 
       }
 
@@ -138,7 +138,7 @@ export function Register() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+          Registrarse
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -149,7 +149,7 @@ export function Register() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="Nombre"
                   autoFocus
                 />
               </Grid>
@@ -158,7 +158,7 @@ export function Register() {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Apellido"
                   name="surname"
                   autoComplete="family-name"
                 />
@@ -168,7 +168,7 @@ export function Register() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Correo Electronico"
                   name="email"
                   autoComplete="email"
                 />
@@ -178,7 +178,7 @@ export function Register() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Contraseña"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -197,18 +197,18 @@ export function Register() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Registrarse
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
                 <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                  Ya tiene una cuenta? Inicia Sesión
                 </Link>
               </Grid>
             </Grid>
           </Box>
           {existe === true ? <Alert variant="filled" severity="info" color='warning' >Este correo ya esta registrado!!</Alert> : ""}
-          {save === true ? <Alert variant='filled' severity='success' color='success'>Registrado correctamente ya puede iniciar session</Alert> : ""}
+          {save === true ? <Alert variant='filled' severity='success' color='success'>¡Registro exitoso! Por favor, verifica tu cuenta en tu correo electrónico </Alert> : ""}
           {faltanDatos === true ? <Alert variant='filled' severity='info' color='warning'>Rellene todos los campos</Alert> : ''}
           {save === false ? <Alert variant='filled' severity='warning' color='warning'>occurio un error inesperado</Alert> : ''}
           {valCorreo === true ? <Alert variant='filled' severity='warning' color='warning'>Correo no valido</Alert> : ''}

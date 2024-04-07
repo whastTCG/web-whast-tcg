@@ -18,6 +18,11 @@ import { Context } from '../../context/Context';
 import { Login } from '../../helper/login/loginHelper';
 import { debounceTime, Subject } from 'rxjs';
 
+//hook personalizados
+import { useRenderMensajes } from './useRenderMensajes';
+import { reenviarEmial } from '../../helper/reenviarEmail';
+
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,12 +36,15 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const defaultTheme = createTheme();
 
 let search = new Subject();
 let search$ = search.asObservable();
+
+let enviar = new Subject();
+let enviar$ = enviar.asObservable();
 
 export default function SignInSide({ setAbrir }) {
 
@@ -47,27 +55,59 @@ export default function SignInSide({ setAbrir }) {
   const { userLog, setUserLog } = React.useContext(Context);
   const { sessionUser } = React.useContext(Context);
   const [rememberMe, setRememberMe] = React.useState('');
-
-
+  const [correo, setCorreo] = React.useState('');
+  const [correoActual, setCorreoActual] = React.useState('');
 
   const handledCheckBox = (e) => {
     setRememberMe(e.target.checked);
   }
 
-  const renderizarMnesaje = () => {
-    if (saved === "success") {
-      return (<strong className='alert-success'>password correcto</strong>)
-    } else {
-
-    }
-    if (saved === "error password") {
-      return (<strong className='alert-error'>Password Incorrecto</strong>)
-    };
-
-    if (saved === "no existe") {
-      return (<strong className='alert-error'>Ingrese un usuario valido o existente</strong>)
-    }
+  const handleResend = (e) => {
+    setCorreoActual(e.target.value);
+    enviar.next();
   }
+  const { renderizarMnesaje } = useRenderMensajes(saved, handleResend);
+
+
+
+
+  //metodo ron rxjs para reenviar correo
+  React.useEffect(() => {
+    const subcription = enviar$.pipe(debounceTime(1000)).subscribe(async () => {
+
+      //console.log(correo);
+      if (correoActual !== correo) {
+        setSaved("usuario no encontrado");
+        return
+      };
+
+      const datos = await reenviarEmial(correo, null);
+
+      if (datos.status === "success") {
+        setSaved("Correo Enviado!!!")
+
+        setTimeout(() => {
+          setSaved(' ')
+        }, 10000);
+      }
+
+      if (datos.status === "usuario no encontrado") {
+        setSaved("usuario no encontrado");
+
+        setTimeout(() => {
+          setSaved(' ')
+        }, 10000);
+      }
+    })
+
+
+
+    return () => {
+      return subcription.unsubscribe();
+    };
+  }, [correo]);
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -78,7 +118,7 @@ export default function SignInSide({ setAbrir }) {
 
   };
 
-  
+
   //con el use memo evitamos que se ejecute la funcion dentro nuevamente al momento de  renderizar nuevamente el componente ya sea por un cambio de estado
   React.useMemo(() => {
     const subcription = search$.pipe(debounceTime(1000)).subscribe(async (data) => {
@@ -88,10 +128,10 @@ export default function SignInSide({ setAbrir }) {
         objetoCompleto[name] = value;
       }
       // console.log(objetoCompleto);
-      
+
       //pasarle el objeto como parametro al metodo login que viene del helper
       const { datos } = await Login(objetoCompleto, rememberMe);
-      
+
       if (datos.status === "success") {
         //setear como true el estado de la session
         setUserLog(true);
@@ -100,50 +140,55 @@ export default function SignInSide({ setAbrir }) {
 
         //cerrar el lateral del login 
         setAbrir(false);
-       
+
         localStorage.setItem("user", JSON.stringify(datos.userLogin));
 
         //guardamos los datos del usuario logeado 
         //usamos el sessionStorage por defecto ya que al cerrar el navegador o la pestaña se destruyen
         //en caso de que marque la opcion recordarme guardar las variables en el local storage ya que estan persisten aun despues de cerrar las pestañas o el navegador
-      //   if (rememberMe === true) {
-          
-      //     //cargar l;a informacion del token en el local storage
-      //     localStorage.setItem("token", datos.token);
-      //     //cargar la informacion del usuaario en el local storage
-      //     localStorage.setItem("user", JSON.stringify(datos.userLogin));
-      //     localStorage.setItem("remember", 'true');
-      //   } else {
-           
-      //     //cargar l;a informacion del token en el session storage
-      //     sessionStorage.setItem("token", datos.token);
-      //     //cargar la informacion del usuaario en el session storage
-      //     sessionStorage.setItem("user", JSON.stringify(datos.userLogin));
-      //     localStorage.setItem("remember", 'false');
-          
-        
-      //   }
-        
-      // } else {
-      //   if (datos.status === "error password") {
-      //     setSaved("error");
-      //   }
-       }
-      if (datos.status==='no existe') {
+        //   if (rememberMe === true) {
+
+        //     //cargar l;a informacion del token en el local storage
+        //     localStorage.setItem("token", datos.token);
+        //     //cargar la informacion del usuaario en el local storage
+        //     localStorage.setItem("user", JSON.stringify(datos.userLogin));
+        //     localStorage.setItem("remember", 'true');
+        //   } else {
+
+        //     //cargar l;a informacion del token en el session storage
+        //     sessionStorage.setItem("token", datos.token);
+        //     //cargar la informacion del usuaario en el session storage
+        //     sessionStorage.setItem("user", JSON.stringify(datos.userLogin));
+        //     localStorage.setItem("remember", 'false');
+
+
+        //   }
+
+        // } else {
+        //   if (datos.status === "error password") {
+        //     setSaved("error");
+        //   }
+      }
+      if (datos.status === 'no existe') {
         setSaved('no existe')
       }
+
+      if (datos.status === "no verificado") {
+        setSaved("no verificado");
+      }
+
       if (datos.status === "error password") {
         setSaved("error password");
       }
       //console.log(datos.status)
     });
-   
+
     return () => {
       return subcription.unsubscribe();
     };
 
   }, [rememberMe])
-  
+
 
 
 
@@ -187,7 +232,7 @@ export default function SignInSide({ setAbrir }) {
                   <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Sign in
+                  Iniciar sesión
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                   {renderizarMnesaje()}
@@ -200,6 +245,7 @@ export default function SignInSide({ setAbrir }) {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    onChange={e => setCorreo(e.target.value)}
                   />
 
                   <TextField
@@ -215,7 +261,7 @@ export default function SignInSide({ setAbrir }) {
                   />
                   <FormControlLabel
                     control={<Checkbox value="remember" color="primary" name='remember' onChange={handledCheckBox} />}
-                    label="Remember me"
+                    label="Recuerdame"
                   />
                   <Button
                     type="submit"

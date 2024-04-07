@@ -29,6 +29,7 @@ import { EditarDatosEnvio2 } from '../privateComponent/EditarDatosEnvio2';
 import AgregarDatosEnvio from '../privateComponent/AgregarDatosEnvio';
 import { SeleccionarEnvio } from '../privateComponent/SeleccionarEnvio';
 import { ConfirmarPago } from '../ConfirmarPago';
+import { VerificarCuenta } from '../utilidad/VerificarCuenta';
 
 
 
@@ -71,6 +72,8 @@ export const MainRouter = () => {
                         <Route path='/carrito' element={<Carrito />} />
                         <Route path='/seleccionar-envio' element={<SeleccionarEnvio/>}/>
                         <Route path='/confirmar-pago' element={<ConfirmarPago/>}/ >
+                        <Route path='*' element={<div>Error 404 Page Not Found!</div>}/ >
+                        <Route path='/verificar-cuenta/:_id' element={<VerificarCuenta/>}/ >
 
                         {/* {solo mostrar si no estan logeados} */}
                         <Route path='/' element={<PublicLayoutLogin />}>

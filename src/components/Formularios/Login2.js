@@ -15,6 +15,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { debounceTime, Subject } from 'rxjs';
 import { Context } from '../../context/Context';
 import { Login } from '../../helper/login/loginHelper';
+import { reenviarEmial } from '../../helper/reenviarEmail';
+import { useRenderMensajes } from './useRenderMensajes';
+//custom hook
+
 
 function Copyright(props) {
   return (
@@ -32,39 +36,61 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
-
+//para iniciar sesion
 let search = new Subject();
 let search$ = search.asObservable();
 
+//para reenviar correo
+let enviar = new Subject();
+let enviar$ = enviar.asObservable();
+
 export default function Login2() {
-  
+
 
   //use State
 
   const [saved, setSaved] = React.useState("notSender");
   //use Context
-  const {  setUserLog } = React.useContext(Context);
- 
+  const { setUserLog } = React.useContext(Context);
+
   const [rememberMe, setRememberMe] = React.useState('');
+
+  const [correo, setCorreo] = React.useState('');
+  const [correoActual, setCorreoActual] = React.useState('')
+  //const correoRef = React.useRef(correo);
 
   const handledCheckBox = (e) => {
     setRememberMe(e.target.checked);
   }
 
-  const renderizarMnesaje = () => {
-    if (saved === "success") {
-      return (<strong className='alert-success'>password correcto</strong>)
-    } else {
 
-    }
-    if (saved === "error password") {
-      return (<strong className='alert-error'>Password Incorrecto</strong>)
-    };
 
-    if (saved === "no existe") {
-      return (<strong className='alert-error'>Ingrese un usuario valido o existente</strong>)
-    }
-  }
+  // const renderizarMnesaje = () => {
+  //   if (saved === "success") {
+  //     return (<Typography variant='h7' color={"green"} >password correcto!!</Typography>)
+  //   }
+  //   if (saved === "error password") {
+  //     return (<Typography variant='h7' color={"orangered"} >Password Incorrecto</Typography>)
+  //   };
+
+  //   if (saved === "no existe") {
+  //     return (<Typography variant='h7' color={"orangered"} >Ingrese un usuario valido o existente</Typography>)
+  //   }
+
+  //   if (saved === "no verificado") {
+  //     return (<><Typography variant='h7' color={"orangered"} >Usuario No Verificado. Porfavor Verifica Tu Cuenta En Tu Correo Electronico </Typography>
+  //       <Typography
+  //         variant="body1"
+  //         component="div" // Utilizamos un componente div en lugar de un enlace (<a>)
+  //         style={{ cursor: 'pointer', textDecoration: 'underline' }} // Añadimos un estilo para simular un enlace
+  //         onClick={handleResend} // Asignamos la función handleResend al evento onClick
+  //       >
+  //         Reenviar Correo de Verificación
+  //       </Typography>
+  //     </>
+  //     )
+  //   }
+  // }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -72,50 +98,101 @@ export default function Login2() {
     const data = new FormData(event.currentTarget);
     search.next(data);
 
-
   };
 
+  const handleResend = (e) => {
+    setCorreoActual(e.target.value);
+
+    enviar.next();
+  }
+
+  const { renderizarMnesaje } = useRenderMensajes(saved, handleResend);
+  // React.useEffect(() => {
+  //   correoRef.current = correo;
+  // }, [correo]);
 
 
-  
+ 
+
+  //metodo con rxjs para reenviar correo
+  React.useEffect(() => {
+    const subcription = enviar$.pipe(debounceTime(1000)).subscribe(async () => {
+
+      //console.log(correo);
+      if (correoActual !== correo) {
+        setSaved("usuario no encontrado");
+        return
+      };
+
+      const datos = await reenviarEmial(correo, null);
+
+      if (datos.status === "success") {
+        setSaved("Correo Enviado!!!")
+
+        setTimeout(() => {
+          setSaved(' ')
+        }, 10000);
+      }
+
+      if (datos.status === "usuario no encontrado") {
+        setSaved("usuario no encontrado");
+
+        setTimeout(() => {
+          setSaved(' ')
+        }, 10000);
+      }
+    })
+
+    return () => {
+      return subcription.unsubscribe();
+    };
+  }, [correo]);
+
+
+
   //con el use memo evitamos que se ejecute la funcion dentro nuevamente al momento de  renderizar nuevamente el componente ya sea por un cambio de estado
-  React.useMemo(() => {
+  React.useEffect(() => {
     const subcription = search$.pipe(debounceTime(1000)).subscribe(async (data) => {
       const objetoCompleto = {};
-      
+
       for (let [name, value] of data) {
         objetoCompleto[name] = value;
       }
-     
-      
+
+
       const { datos } = await Login(objetoCompleto, rememberMe);
-      
+
+      if (datos.status === "no verificado") {
+        setSaved("no verificado");
+      }
+
       if (datos.status === "success") {
+
         setUserLog(true);
-        
+
         setSaved("success");
 
-        
+
         localStorage.setItem("user", JSON.stringify(datos.userLogin));
 
 
-       }
-      if (datos.status==='no existe') {
+      }
+      if (datos.status === 'no existe') {
         setSaved('no existe')
       }
 
       if (datos.status === "error password") {
         setSaved("error password");
       }
-      
+
     });
-   
+
     return () => {
       return subcription.unsubscribe();
     };
 
   }, [rememberMe])
-  
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -133,7 +210,7 @@ export default function Login2() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Iniciar sesión
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             {renderizarMnesaje()}
@@ -142,24 +219,25 @@ export default function Login2() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Correo Electronico"
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={e => setCorreo(e.target.value)}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Contraseña"
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" name='remember' onChange={handledCheckBox} />}
-              label="Remember me"
+              label="Recuerdame"
             />
             <Button
               type="submit"
@@ -167,17 +245,17 @@ export default function Login2() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Iniciar sesión
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link href="/login" variant="body2">
+                  Olvidaste Tu Contraseña?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/register" variant="body2">
+                  {"No Tienes Una Cuent? Registrate!!"}
                 </Link>
               </Grid>
             </Grid>

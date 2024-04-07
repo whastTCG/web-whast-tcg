@@ -101,7 +101,9 @@ export function Cartas() {
 
     const anadirAlCarro = (event, item) => {
         // Verificar si el item tiene stock igual a 0
+
         if (parseInt(item.stock) === 0) {
+
             setMensajeFueraDeStock('No hay stock disponible para este producto.');
             setSnackbarOpen(true);
             return; // Salir de la función si no hay stock
@@ -112,25 +114,30 @@ export function Cartas() {
         // Verificar si el producto está en el carrito
         const productoEnCarritoIndex = carritoActual.findIndex((cartItem) => cartItem._id === item._id);
 
-        // Si el producto no está en el carrito, agregarlo con cantidad 1
-        if (productoEnCarritoIndex === -1) {
-            carritoActual.push({ ...item, cantidad: 1 });
-            // Guardar el nombre de la carta en el mensaje para avisar que se agregó al carro
-            setMensajeAgregado(item.cardText +" Ha sido agregado al carrito");
+        // Verificar si la cantidad total del producto en el carrito más la cantidad que deseas agregar excede el stock disponible
+        const totalCantidadProductoEnCarrito = carritoActual.reduce((total, cartItem) => {
+            if (cartItem._id === item._id) {
+                return total + cartItem.cantidad; // Sumar solo la cantidad del producto actual
+            }
+            return total;
+        }, 0);
+
+        if (totalCantidadProductoEnCarrito + 1 > item.stock) {
+            setMensajeFueraDeStock('No hay suficiente stock disponible.');
             setSnackbarOpen(true);
         } else {
-            // Verificar si la cantidad total es igual o mayor al stock
-            if (carritoActual.reduce((total, cartItem) => total + cartItem.cantidad, 0) > item.stock) {
-                setMensajeFueraDeStock('No hay suficiente stock disponible.');
+            // Si hay suficiente stock disponible, agregar el producto al carrito
+            if (productoEnCarritoIndex === -1) {
+                carritoActual.push({ ...item, cantidad: 1 });
+                setMensajeAgregado(item.cardText + " Ha sido agregado al carrito");
                 setSnackbarOpen(true);
             } else {
-                // Si el producto ya está en el carrito, sumar la cantidad
                 carritoActual[productoEnCarritoIndex].cantidad += 1;
-                // Agregar mensaje cada vez que se agrega al carro
-                setMensajeAgregado(item.cardText +" Ha sido agregado al carrito");
+                setMensajeAgregado(item.cardText + " Ha sido agregado al carrito");
                 setSnackbarOpen(true);
             }
         }
+
 
         // Guardar el carrito actualizado en el localStorage
         localStorage.setItem('carrito', JSON.stringify(carritoActual));
@@ -138,7 +145,6 @@ export function Cartas() {
         // Actualizar el estado del carrito en tu componente React
         setCarrito(carritoActual);
     };
-
 
 
     const calcularPrecioCLP = (price) => {
@@ -206,8 +212,8 @@ export function Cartas() {
 
                                         ) : (
 
-                                            <CardContent sx={{ alignContent: "center", display: "flex" }}>
-                                                <Button sx={{ width: 200, height: 40 }} variant="contained" onClick={(e) => anadirAlCarro(e, item)}>
+                                            <CardContent sx={{ justifyContent: "center", display: "flex" }}>
+                                                <Button sx={{ width: 220, height: 40 }} variant="contained" onClick={(e) => anadirAlCarro(e, item)}>
                                                     Anadir al carro
                                                 </Button>
 
