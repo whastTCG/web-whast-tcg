@@ -16,15 +16,15 @@ export default function DatosPersonales() {
 
     const cerrarSession = () => {
         navegar("/logout");
-    }
+    };
 
     const mostrarDetalleCuenta = () => {
-        navegar('/datos-envio')
-    }
+        navegar('/datos-envio');
+    };
 
     const mostrarHistorialPedidos = () => {
-
-    }
+        navegar('/historial-pedidos');
+    };
 
     return (
         <Box sx={{ background: 'linear-gradient(180deg, #001f3f 0%, #000000 100%)' }} maxWidth={'1600px'} marginLeft={'auto'} marginRight={'auto'}>

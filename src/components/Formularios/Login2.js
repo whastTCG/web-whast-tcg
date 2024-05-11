@@ -16,8 +16,10 @@ import { debounceTime, Subject } from 'rxjs';
 import { Context } from '../../context/Context';
 import { Login } from '../../helper/login/loginHelper';
 import { reenviarEmial } from '../../helper/reenviarEmail';
-import { useRenderMensajes } from './useRenderMensajes';
+import { validateEmail } from '../../helper/validarEmail';
 //custom hook
+import { useRenderMensajes } from './useRenderMensajes';
+
 
 
 function Copyright(props) {
@@ -56,12 +58,15 @@ export default function Login2() {
   const [rememberMe, setRememberMe] = React.useState('');
 
   const [correo, setCorreo] = React.useState('');
-  const [correoActual, setCorreoActual] = React.useState('')
+
+  const [isEmailValid, setIsEmailValid] = React.useState(true);
+
   //const correoRef = React.useRef(correo);
 
   const handledCheckBox = (e) => {
     setRememberMe(e.target.checked);
   }
+
 
 
 
@@ -95,15 +100,26 @@ export default function Login2() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     //capturar los datos del formulario login
+
     const data = new FormData(event.currentTarget);
+    if (!isEmailValid) return;
+
     search.next(data);
 
   };
 
   const handleResend = (e) => {
-    setCorreoActual(e.target.value);
 
+    if (!isEmailValid) return;
     enviar.next();
+  }
+
+
+  const handleSetCorreo = (e) => {
+    setSaved("");
+    const newEmail = e.target.value || "";
+    setCorreo(newEmail);
+    validateEmail(newEmail , setIsEmailValid);
   }
 
   const { renderizarMnesaje } = useRenderMensajes(saved, handleResend);
@@ -112,17 +128,11 @@ export default function Login2() {
   // }, [correo]);
 
 
- 
+
 
   //metodo con rxjs para reenviar correo
   React.useEffect(() => {
     const subcription = enviar$.pipe(debounceTime(1000)).subscribe(async () => {
-
-      //console.log(correo);
-      if (correoActual !== correo) {
-        setSaved("usuario no encontrado");
-        return
-      };
 
       const datos = await reenviarEmial(correo, null);
 
@@ -174,7 +184,7 @@ export default function Login2() {
 
 
         localStorage.setItem("user", JSON.stringify(datos.userLogin));
-
+        window.location.reload();
 
       }
       if (datos.status === 'no existe') {
@@ -223,7 +233,9 @@ export default function Login2() {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={e => setCorreo(e.target.value)}
+              onChange={e => handleSetCorreo(e)}
+              error={!isEmailValid}
+              helperText={!isEmailValid ? 'Por favor, ingrese un correo electrónico válido' : ''}
             />
             <TextField
               margin="normal"
@@ -249,13 +261,13 @@ export default function Login2() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="/login" variant="body2">
+                <Link href="/recuperar-contraseña" variant="body2">
                   Olvidaste Tu Contraseña?
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="/register" variant="body2">
-                  {"No Tienes Una Cuent? Registrate!!"}
+                  {"No Tienes Una Cuenta? Registrate!!"}
                 </Link>
               </Grid>
             </Grid>

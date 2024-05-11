@@ -30,7 +30,11 @@ import AgregarDatosEnvio from '../privateComponent/AgregarDatosEnvio';
 import { SeleccionarEnvio } from '../privateComponent/SeleccionarEnvio';
 import { ConfirmarPago } from '../ConfirmarPago';
 import { VerificarCuenta } from '../utilidad/VerificarCuenta';
-
+import RecuperarContrasena from '../Formularios/RecuperarContraseña';
+import { RecuperarContrasenaEmailToken } from '../Formularios/RecuperarContrasenaEmailToken'; 
+import { CargarEstadoVenta } from '../Formularios/CargarEstadoVenta';
+import { HistoriaDePedidos } from '../privateComponent/HistoriaDePedidos';
+ 
 
 
 export const MainRouter = () => {
@@ -74,15 +78,20 @@ export const MainRouter = () => {
                         <Route path='/confirmar-pago' element={<ConfirmarPago/>}/ >
                         <Route path='*' element={<div>Error 404 Page Not Found!</div>}/ >
                         <Route path='/verificar-cuenta/:_id' element={<VerificarCuenta/>}/ >
-
+                        <Route path='/recuperar-contraseña/' element={<RecuperarContrasena/>}/ >
+                        <Route path='/recuperar-contraseña-token/:email' element={<RecuperarContrasenaEmailToken/>}/>
+                        <Route path='/cargar-estado-venta' element={<CargarEstadoVenta/>}/ >
+                        
+                            
                         {/* {solo mostrar si no estan logeados} */}
                         <Route path='/' element={<PublicLayoutLogin />}>
                             <Route path='/register' element={<Register />} />
                             <Route path='/login/' element={<Login2 />} />
                         </Route>
 
-                        {/* rutas privadas solo mostrar si estan logeados */}
+                        {/* rutas privadas solo mostrar si estan con sesion iniciada */}
                         <Route  element={<PrivateLayautUser/>}>
+
                             <Route path="/customer" element={<Customer />} />
                             <Route path="/logout" element={<Logout/>}/>
                             <Route path='/datos-envio' element={<DatosEnvio/>}/>
@@ -91,6 +100,7 @@ export const MainRouter = () => {
                             <Route path='/editar-datos-envio/:id' element={<EditarDatosEnvio/>} />
                             <Route path='/editar-datos-envio2/:id' element={<EditarDatosEnvio2/>} />
                             <Route path='/agregar-datos-envio' element={<AgregarDatosEnvio/>} />
+                            <Route path='/historial-pedidos' element={<HistoriaDePedidos/>} />
                            
                         </Route>
 

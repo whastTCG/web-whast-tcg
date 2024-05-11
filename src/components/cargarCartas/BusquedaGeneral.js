@@ -9,10 +9,11 @@ import { Box, Pagination } from '@mui/material';
 import { listarGlobalPaginado } from '../../helper/listarGlobalPagination/listarGlobalPag';
 import '../../style/testCarta.css';
 import { useNavigate } from 'react-router-dom';
-import { getDollarExchangeRate } from '../../helper/UsdToCLP';
+
 
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import { Cargando } from '../utilidad/Cargando';
 
 export function BusquedaGeneral() {
 
@@ -25,6 +26,8 @@ export function BusquedaGeneral() {
     const { cantidadItem, setCantidadItem } = useContext(Context);
 
     const { setCarrito, carrito } = useContext(Context);
+
+    const { sessionUser } = useContext(Context);
 
     //estados para controlar mensaje de stock
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -88,6 +91,7 @@ export function BusquedaGeneral() {
 
     const abrirCarta = (e, idCarta) => {
         navegar('/carta/' + idCarta)
+        
     }
 
 
@@ -152,6 +156,7 @@ export function BusquedaGeneral() {
         return precioFormateado;
     };
 
+   
 
     return (
         <Box marginTop={2} >

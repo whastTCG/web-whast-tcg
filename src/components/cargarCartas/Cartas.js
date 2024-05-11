@@ -29,6 +29,8 @@ export function Cartas() {
 
     const { filtro } = useContext(Context);
 
+    const { sessionUser } = useContext(Context);
+
     const { qtPage, setQtPage } = useContext(Context);
 
     const { setCarrito } = useContext(Context);
@@ -159,8 +161,9 @@ export function Cartas() {
 
         return precioFormateado;
     };
+   
 
-    if (!cartasBLMR) {
+    if (!cartasBLMR || !sessionUser) {
         return <div>Cargando...</div>;
     }
 
@@ -212,11 +215,7 @@ export function Cartas() {
 
                                         ) : (
 
-<<<<<<< HEAD
                                             <CardContent sx={{ justifyContent: "center", display: "flex" }}>
-=======
-                                            <CardContent sx={{ alignContent: "center", display: "flex" }}>
->>>>>>> 9b6c45cabc4ec62e8d2510fad1417d59ff58d539
                                                 <Button sx={{ width: 220, height: 40 }} variant="contained" onClick={(e) => anadirAlCarro(e, item)}>
                                                     Anadir al carro
                                                 </Button>

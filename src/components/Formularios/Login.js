@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Context } from '../../context/Context';
 import { Login } from '../../helper/login/loginHelper';
 import { debounceTime, Subject } from 'rxjs';
+import { validateEmail } from '../../helper/validarEmail';
 
 //hook personalizados
 import { useRenderMensajes } from './useRenderMensajes';
@@ -56,16 +57,19 @@ export default function SignInSide({ setAbrir }) {
   const { sessionUser } = React.useContext(Context);
   const [rememberMe, setRememberMe] = React.useState('');
   const [correo, setCorreo] = React.useState('');
-  const [correoActual, setCorreoActual] = React.useState('');
+  const [isEmailValid, setIsEmailValid] = React.useState(true);
+
+
 
   const handledCheckBox = (e) => {
     setRememberMe(e.target.checked);
   }
 
   const handleResend = (e) => {
-    setCorreoActual(e.target.value);
+    if (!isEmailValid) return;
     enviar.next();
   }
+
   const { renderizarMnesaje } = useRenderMensajes(saved, handleResend);
 
 
@@ -75,11 +79,7 @@ export default function SignInSide({ setAbrir }) {
   React.useEffect(() => {
     const subcription = enviar$.pipe(debounceTime(1000)).subscribe(async () => {
 
-      //console.log(correo);
-      if (correoActual !== correo) {
-        setSaved("usuario no encontrado");
-        return
-      };
+
 
       const datos = await reenviarEmial(correo, null);
 
@@ -111,13 +111,18 @@ export default function SignInSide({ setAbrir }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!isEmailValid) return;
     //capturar los datos del formulario login
     const data = new FormData(event.currentTarget);
     search.next(data);
-
-
   };
 
+  const handleSetCorreo = (e) => {
+    const correoNuevo = e.target.value || "";
+    setSaved("");
+    setCorreo(correoNuevo);
+    validateEmail(correoNuevo , setIsEmailValid);
+  }
 
   //con el use memo evitamos que se ejecute la funcion dentro nuevamente al momento de  renderizar nuevamente el componente ya sea por un cambio de estado
   React.useMemo(() => {
@@ -142,7 +147,7 @@ export default function SignInSide({ setAbrir }) {
         setAbrir(false);
 
         localStorage.setItem("user", JSON.stringify(datos.userLogin));
-
+        window.location.reload();
         //guardamos los datos del usuario logeado 
         //usamos el sessionStorage por defecto ya que al cerrar el navegador o la pestaña se destruyen
         //en caso de que marque la opcion recordarme guardar las variables en el local storage ya que estan persisten aun despues de cerrar las pestañas o el navegador
@@ -234,7 +239,7 @@ export default function SignInSide({ setAbrir }) {
                 <Typography component="h1" variant="h5">
                   Iniciar sesión
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                   {renderizarMnesaje()}
                   <TextField
                     margin="normal"
@@ -245,7 +250,9 @@ export default function SignInSide({ setAbrir }) {
                     name="email"
                     autoComplete="email"
                     autoFocus
-                    onChange={e => setCorreo(e.target.value)}
+                    onChange={e => handleSetCorreo(e)}
+                    error={!isEmailValid}
+                    helperText={!isEmailValid ? 'Por favor, ingrese un correo electrónico válido' : ''}
                   />
 
                   <TextField
@@ -273,8 +280,8 @@ export default function SignInSide({ setAbrir }) {
                   </Button>
                   <Grid container>
                     <Grid item xs>
-                      <Link href="#" variant="body2">
-                        restablecer mi contraseña
+                      <Link href="/recuperar-contraseña" variant="body2">
+                        Olvidaste Tu Contraseña?
                       </Link>
                     </Grid>
                     <Grid item>

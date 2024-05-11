@@ -110,7 +110,7 @@ export function Register() {
         setFaltanDatos(false);
         setValNombrePass(false);
         setValCorreo(false);
-      },4000);
+      },10000);
 
     });
     return () => {
@@ -210,9 +210,9 @@ export function Register() {
           {existe === true ? <Alert variant="filled" severity="info" color='warning' >Este correo ya esta registrado!!</Alert> : ""}
           {save === true ? <Alert variant='filled' severity='success' color='success'>¡Registro exitoso! Por favor, verifica tu cuenta en tu correo electrónico </Alert> : ""}
           {faltanDatos === true ? <Alert variant='filled' severity='info' color='warning'>Rellene todos los campos</Alert> : ''}
-          {save === false ? <Alert variant='filled' severity='warning' color='warning'>occurio un error inesperado</Alert> : ''}
+          {save === false ? <Alert variant='filled' severity='warning' color='warning'>Error: Asegurese de rellenar todos los campos</Alert> : ''}
           {valCorreo === true ? <Alert variant='filled' severity='warning' color='warning'>Correo no valido</Alert> : ''}
-          {valNombrePass === true ? <Alert variant='filled' severity='warning' color='warning'>Nombre debe tener al menos 3 caracteres y el Password 5</Alert> : ''}
+          {valNombrePass === true ? <Alert variant='filled' severity='warning' color='warning'>Nombre y apellido debe tener al menos 3 caracteres y la contraseña 5</Alert> : ''}
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>

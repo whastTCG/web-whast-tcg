@@ -12,11 +12,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { Navbar } from '../navList/Navbar';
 import { NavbarLogin } from '../navListLogin/NavbarLogin';
-import { Subject,  debounceTime } from 'rxjs';
+import { Subject, debounceTime } from 'rxjs';
 
 import { Context } from '../../../context/Context';
 import { listarGlobalPaginado } from '../../../helper/listarGlobalPagination/listarGlobalPag';
-import { NavLink,  useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+
 
 //import estilos
 import '../../../style/AppBarTcg.css';
@@ -115,7 +117,7 @@ export default function PrimarySearchAppBar() {
       if (value) {
         setValorBusqueda(value);
         busqueda(1, value);
-        navegar("/busqueda-general", { replace: true });
+        navegar("/busqueda-general");
         //console.log("llegue aqui lanzar busqueda");
       } else {
         // setValorBusqueda("");
@@ -157,6 +159,7 @@ export default function PrimarySearchAppBar() {
                   <span>Whast TCG</span>
                 </NavLink>
               </Typography>
+
               {/* input de busqueda */}
               <Search>
                 <SearchIconWrapper>
@@ -171,23 +174,36 @@ export default function PrimarySearchAppBar() {
 
                 />
               </Search>
-              <Box sx={{flexGrow:"1"}}/>
-              <Box sx={{ display:"flex"}} >
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                color="inherit"
-                onClick={redirigirCarrito}
-              >
-                <AddShoppingCartIcon />
 
-              </IconButton>
-              <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft:3}}>
-                <NavbarLogin />
+              <Box sx={{ flexGrow: "1" }} />
+              <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
+                <NavLink
+                  to="/cargar-estado-venta"
+                  className="enlace-navbar"
+                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                >
+                  <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+                  Revisa tu pedido
+                </NavLink>
+              </Typography>
+              <Box sx={{ display: "flex" }} >
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={redirigirCarrito}
+                >
+                  <AddShoppingCartIcon />
+
+                </IconButton>
+
+                <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
+                  <NavbarLogin />
+                </Box>
               </Box>
-              </Box>
+
             </Toolbar>
           </AppBar>
 
@@ -217,34 +233,44 @@ export default function PrimarySearchAppBar() {
                     <SearchIcon />
                   </SearchIconWrapper>
                   <StyledInputBase
-  
+
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
                     name="busqueda"
                     onChange={e => inputChange(e)}
-  
+
                   />
                 </Search>
-                <Box sx={{flexGrow:"1"}}/>
-                <Box sx={{ display:"flex"}} >
-                <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-haspopup="true"
-                  color="inherit"
-                  onClick={redirigirCarrito}
+                <Box sx={{ flexGrow: "1" }} />
+                <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
+                <NavLink
+                  to="/cargar-estado-venta"
+                  className="enlace-navbar"
+                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 >
-                  <AddShoppingCartIcon />
-  
-                </IconButton>
-                <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft:3}}>
-                  <NavbarLogin />
-                </Box>
+                  <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+                  Revisa tu pedido
+                </NavLink>
+              </Typography>
+                <Box sx={{ display: "flex" }} >
+                  <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-haspopup="true"
+                    color="inherit"
+                    onClick={redirigirCarrito}
+                  >
+                    <AddShoppingCartIcon />
+
+                  </IconButton>
+                  <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
+                    <NavbarLogin />
+                  </Box>
                 </Box>
               </Toolbar>
             </AppBar>
-  
+
           </Box>
         )
       }

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 
 import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Container, Paper, Typography } from '@mui/material';
 import { Context } from '../../context/Context';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -25,7 +25,7 @@ export const DatosEnvio = () => {
     const [loading, setLoading] = React.useState(true);
 
 
-    
+
 
     useEffect(() => {
 
@@ -67,7 +67,7 @@ export const DatosEnvio = () => {
         navegar('/cambiar-contrasena');
     }
 
-    const agregarEnvio = () =>{
+    const agregarEnvio = () => {
         navegar('/agregar-datos-envio')
     }
     const card = (
@@ -114,12 +114,11 @@ export const DatosEnvio = () => {
         <Box
             sx={{
                 display: 'block',
-                backgroundColor: '#f5f5f5',
+                backgroundColor: 'white',
                 border: '1px solid #ddd',
                 borderRadius: '8px',
-                padding: '10px',
+                padding: '3px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                marginTop: '20px',
                 marginLeft: { lg: 2, sm: 2, md: 2 },
                 width: { lg: 1000, md: 500 },
 
@@ -158,41 +157,28 @@ export const DatosEnvio = () => {
     return (
         <>
             <Customer />
-            <Box sx={{ flexGrow: 1 }}>
-                <Box marginLeft={{ xl: 11, lg: 0, md: 0, xs: 0, sm: 0 }} className='container-personal'>
+            <Container maxWidth='xl' sx={{ mt: 4, mb: 4 }}>
+                <Box sx={{ mx: 'auto', maxWidth: '100%' }}>
                     <Grid container spacing={3} >
 
-                        <Grid item xs display={{ xs: 'none', md: 'block', sm: 'block' }} />
+                        <Grid item xs={10} sx={{ mx: 'auto' }} md={4}>
 
-                        <Grid item xs={10} sx={{ mx: 'auto' }}>
-                            <Box
-                                display={{ sm: 'flex', md: 'flex', xs: 'block' }}
-                                marginLeft={{ xs: 0, md: 0, xl: '20px' }} // Ajusta según sea necesario
-                            >
-                                <Box
-                                    sx={{
-                                        display: { sm: 'block', md: 'block', xs: 'block' },
-                                        backgroundColor: '#f5f5f5',
-                                        border: '1px solid #ddd',
-                                        borderRadius: '8px',
-                                        padding: '10px',
-                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                        marginTop: '20px',
-                                        marginBottom: '20px',
-                                    }}
-                                >
-                                    <Box sx={{ minWidth: 275 }}>
-                                        <Card variant="outlined">{card}</Card>
-                                    </Box>
-                                </Box>
-                                {addShippingSection}
+                            <Box sx={{ minWidth: 275 }}>
+                                <Paper elevation={3} style={{ padding: '20px' }}>
+                                    <Card variant="outlined">{card}</Card>
+                                </Paper>
+
                             </Box>
+
+                        </Grid>
+                        <Grid item xs={12} md={8}>
+                            {addShippingSection}
                         </Grid>
 
-                        <Grid item xs display={{ xs: 'none', md: 'block', sm: 'block' }} />
+
                     </Grid>
                 </Box>
-            </Box>
+            </Container>
 
 
 

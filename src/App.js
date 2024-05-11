@@ -30,7 +30,7 @@ function App() {
   //parametro de usuarios logeados
   const [userLog, setUserLog] = useState(false);
 
-  const [sessionUser, setSessionUser] = useState({});
+  const [sessionUser, setSessionUser] = useState(null);
 
 
 
@@ -51,7 +51,9 @@ function App() {
       //console.log(cookiesToken.token);
       let user = localStorage.getItem('user');
       if (!user) {
+        
         setLoading(false);
+        setSessionUser({});
         return false
       }
       //usamos el metodo del helper para obtener la cookie
@@ -59,6 +61,7 @@ function App() {
 
       if (cookie.status === 'error') {
         setUserLog(false);
+        setSessionUser({});
         setLoading(false);
         return false;
       }
@@ -66,6 +69,7 @@ function App() {
 
       if (!cookie.miCookie || !user) {
         setUserLog(false);
+        setSessionUser({});
         setLoading(false);
 
         return false;
@@ -91,6 +95,7 @@ function App() {
     };
 
     authUser();
+    
   }, []);
 
   useEffect(() => {
@@ -123,7 +128,7 @@ function App() {
 
         // Verificamos si el valor del dólar existe en el local storage
         if (isNaN(valorDolarLocalStorage) || valorDolarLocalStorage !== parseFloat(dolar)) {
-          console.log('aqui toy weon')
+          
           // Si es diferente, actualizamos el valor en el localStorage
           localStorage.setItem('valorDolar', dolar);
 
@@ -152,7 +157,7 @@ function App() {
   // Mientras se está autenticando, puedes mostrar un indicador de carga
   // esto se muestra mientras el loading este en false y cuando pase a true pasa al render de abajo
   // lo aplicamos porque el useEffect es asyncrono entonces nuestros estados no alcanzan a acutalizarse antes que se renderizen nuestros componentes de la app
-  if (loading) {
+  if (loading || sessionUser === null) {
     return <p>Cargando...</p>;
   }
 

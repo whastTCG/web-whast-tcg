@@ -4,7 +4,7 @@ export const obtenerCookieToken = async()=>{
 
     const request =  await fetch(Global.urlUser+"obtener-cookie", {
         method:"GET",
-        //debes incluir esta basura de codigo si quieres que las peticiones que tengan que ver con token auth y cookies funcionen
+        //debes incluir este  codigo si quieres que las peticiones que tengan que ver con token auth y cookies funcionen
         credentials:"include"
     });
 

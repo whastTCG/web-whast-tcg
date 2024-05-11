@@ -8,7 +8,8 @@ export const Logout = () => {
 
 
   const { setUserLog } = React.useContext(Context);
-  const { setSessionUser } = React.useContext(Context);
+  const { setSessionUser, setCarrito } = React.useContext(Context);
+  
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(true);
 
@@ -52,7 +53,9 @@ export const Logout = () => {
     };
 
     limpiarCookieToken();
-    navegarLogin()
+    setCarrito([]);
+    console.log("gola")
+    navegarLogin();
   }, []);
 
 

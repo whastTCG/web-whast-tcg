@@ -4,8 +4,9 @@ import { obtenerCookieToken } from '../../helper/obtenerCookies';
 import { traerDireccionEnvio } from '../../helper/direccionEnvio';
 import { CardContent, Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemText, styled, Container, TextField, Alert } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useNavigate } from 'react-router-dom';
-import {  validarRut, validarTelefono, validarNombre } from '../../helper/validarFormularioEnvio';
+import { validarRut, validarTelefono, validarNombre } from '../../helper/validarFormularioEnvio';
 import { isValidEmail } from '../../helper/validarEmail';
 
 //import { getDollarExchangeRate } from '../../helper/UsdToCLP';
@@ -16,9 +17,7 @@ const StyledCardContent = styled(CardContent)({
   background: 'lightgray',
 });
 
-const StyledButton = styled(Button)({
-  margin: '8px',
-});
+
 
 const StyledDialog = styled(Dialog)({
   '& .MuiDialog-paper': {
@@ -26,44 +25,7 @@ const StyledDialog = styled(Dialog)({
   },
 });
 
-const AddressCard = ({ direccion, onEdit }) => {
-  return (
-    <Box p={2} boxShadow={0} mb={0} display={{ xl: 'flex' }}>
-      <StyledCardContent>
-        <Box bgcolor="white" p={2} boxShadow={10} borderRadius={3}>
-          <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-            Dirección de Envío
-          </Typography>
-          <Typography variant="subtitle1">
-            Nombre: {direccion.nombreCompleto}
-          </Typography>
-          <Typography variant="subtitle1">
-            Direccion: {direccion.direccion}
-          </Typography>
-          <Typography variant="subtitle1">
-            Comuna: {direccion.comuna}
-          </Typography>
-          <Typography variant="subtitle1">
-            Ciudad: {direccion.ciudad}
-          </Typography>
-          <Typography variant="subtitle1">
-            Region: {direccion.region}
-          </Typography>
-          <Typography variant="subtitle1">
-            Telefono: {direccion.telefono}
-          </Typography>
-          <hr />
-          <Box  display="flex">
-            <Button variant="outlined" color="primary" startIcon={<EditIcon />} sx={{ mb: 1, margin: 1, width: '100%' }} onClick={onEdit}>
-              Editar Dirección
-            </Button>
 
-          </Box>
-        </Box>
-      </StyledCardContent>
-    </Box>
-  );
-};
 
 export const SeleccionarEnvio = () => {
   const { userLog, totalCarrito, setTotalCarrito } = useContext(Context);
@@ -88,7 +50,18 @@ export const SeleccionarEnvio = () => {
   // const [tasaDeCambio, setTasaDeCambio] = useState(1000);
   const navegar = useNavigate();
 
+  //useEffect para verificar si el carro esta vacio, en caso que este vacio redireccionar al inicio
   useEffect(() => {
+    //llamar datos del carrito del local storage 
+    const carritoFromLocalStorage = JSON.parse(localStorage.getItem('carrito'));
+
+    if (!carritoFromLocalStorage || carritoFromLocalStorage.length === 0) {
+      navegar("/inicio");
+    }
+  }, [])
+
+  useEffect(() => {
+
     const traerDatosEnvio = async () => {
       try {
         const cookie = await obtenerCookieToken();
@@ -130,7 +103,7 @@ export const SeleccionarEnvio = () => {
   useEffect(() => {
     setTimeout(() => {
       setAlertaVisible('');
-    }, 5000);
+    }, 30000);
 
   }, [alertaVisible])
 
@@ -207,6 +180,11 @@ export const SeleccionarEnvio = () => {
     }));
   };
 
+  const handleEnviarFormularioSession = () => {
+    localStorage.setItem('formularioTemporal', JSON.stringify(direccionSeleccionada));
+    navegar('/confirmar-pago')
+  }
+
   const handleEnviarFormulario = () => {
 
 
@@ -230,7 +208,7 @@ export const SeleccionarEnvio = () => {
     }
     if (validarTelefono(formulario.telefono) !== null) {
       setAlertaVisible("errorTelefono");
-     // console.log("ingrese un telefono valido")
+      // console.log("ingrese un telefono valido")
       return;
     }
 
@@ -263,27 +241,57 @@ export const SeleccionarEnvio = () => {
     return precioFormateado;
   };
 
+  const AddressCard = ({ direccion, onEdit }) => {
+    return (
+      <Box p={2} boxShadow={0} mb={0} display={{ xl: 'flex' }}>
+        <StyledCardContent>
+          <Box bgcolor="white" p={2} boxShadow={10} borderRadius={3}>
+            <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+              Dirección de Envío
+            </Typography>
+            <Typography variant="subtitle1">
+              Nombre: {direccion.nombreCompleto}
+            </Typography>
+            <Typography variant="subtitle1">
+              Direccion: {direccion.direccion}
+            </Typography>
+            <Typography variant="subtitle1">
+              Comuna: {direccion.comuna}
+            </Typography>
+            <Typography variant="subtitle1">
+              Ciudad: {direccion.ciudad}
+            </Typography>
+            <Typography variant="subtitle1">
+              Region: {direccion.region}
+            </Typography>
+            <Typography variant="subtitle1">
+              Telefono: {direccion.telefono}
+            </Typography>
+            <hr />
+            <Box display="flex">
+              <Button variant="outlined" color="primary" startIcon={<EditIcon />} sx={{ mb: 1, margin: 1, width: '100%' }} onClick={onEdit}>
+                Editar Dirección
+              </Button>
+              <Button variant="outlined" color="primary" startIcon={<LocationOnIcon />} sx={{ mb: 1, margin: 1, width: '100%' }} onClick={handleAbrirDialog}>
+                Seleccionar Datos de envío
+              </Button>
+            </Box>
+          </Box>
+        </StyledCardContent>
+      </Box>
+    );
+  };
+
   const renderLog = () => {
     if (userLog === true) {
       return (
-        <Container maxWidth="lg" sx={{ display:'flex', justifyContent:'center'}} >
+        <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center' }} >
           <Box display="flex" justifyContent="center" mt={3} flexDirection={{ xs: 'column', lg: 'row' }}>
             {/* Columna izquierda */}
-            <Box width={{ xs: '100%', lg: 'auto' }}  mb={{ xs: 2, lg: 0 }} pr={{ xs: 0, lg: 2 }}  justifyContent={'center'} >
-              <Typography variant="h5" sx={{justifyContent:'center', alignContent:'center',  display:'flex'}}>Dirección de entrega  </Typography>
+            <Box width={{ xs: '100%', lg: 'auto' }} mb={{ xs: 2, lg: 0 }} justifyContent={'center'} flex={1}>
+              <Typography variant="h5" sx={{ justifyContent: 'center', alignContent: 'center', display: 'flex' }}>Dirección de entrega  </Typography>
 
               {direccionSeleccionada && <AddressCard direccion={direccionSeleccionada} onEdit={() => handleEditarDireccion(direccionSeleccionada._id)} onDelete={handleBorrarDireccion} isSelected={true} />}
-
-              <StyledButton
-                variant="contained"
-                color="primary"
-                sx={{ mt: 0, width: '200px', display: 'flex',  margin:'0 auto'}}
-                
-                onClick={handleAbrirDialog}
-              >
-                Seleccionar dirección de envío
-              </StyledButton>
-
               <StyledDialog open={openDialog} onClose={handleCerrarDialog}>
                 <DialogTitle>Otras direcciones de envío</DialogTitle>
                 <DialogContent>
@@ -304,12 +312,12 @@ export const SeleccionarEnvio = () => {
             </Box>
 
             {/* Columna derecha */}
-            <Box width={{ xs: '100%', lg: '67%' }} pl={{ xs: 0, lg: 2 }}>
+            <Box width={{ xs: '100%', lg: '67%' }} pl={{ xs: 0, lg: 2 }} flex={1} >
               <Box >
                 <Typography variant="h5" mt={1}>
                   Resumen
                 </Typography>
-                <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl: 530, lg: 200 }} height={{ xl: 270, lg: 270 }} sx={{ overflow: 'auto' }}>
+                <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl: 530, lg: 200 }} height={{ xl: 300, lg: 270 }} sx={{ overflow: 'auto', boxShadow: 10, padding: 2 }}>
                   {carritoInfo.map(item => {
                     return (
                       <Box key={item._id} >
@@ -326,7 +334,11 @@ export const SeleccionarEnvio = () => {
                   <Typography variant="h6" component="div" sx={{ mb: 1 }}>Total</Typography>
                   <Typography>{totalCarrito}</Typography>
                 </Box>
-
+              </Box>
+              <Box display="flex" justifyContent="flex-start" mt={2} marginBottom={2}>
+                <Button variant="contained" color="primary" onClick={handleEnviarFormularioSession} >
+                  Siguiente
+                </Button>
               </Box>
             </Box>
           </Box>
@@ -372,49 +384,49 @@ export const SeleccionarEnvio = () => {
                     Ingrese Un Correo Electronico Valido
                   </Alert> : ''
                   }
-                  
+
                   <form >
                     {/* Agrega los campos del formulario con manejo de eventos */}
-                    <TextField label="Nombre y Apellido" name="nombreCompleto" value={formulario.nombreCompleto} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
+                    <TextField required label="Nombre y Apellido" name="nombreCompleto" value={formulario.nombreCompleto} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
                       inputProps: {
                         maxLength: 40
                       }
                     }} />
-                    <TextField label="Rut" name="rut" value={formulario.rut} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
+                    <TextField required label="Rut" name="rut" value={formulario.rut} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
                       inputProps: {
                         maxLength: 12
                       }
                     }} />
-                    <TextField label="Telefono" name="telefono" value={fono} onChange={handleInputChange} type="tel" // Establece el tipo de entrada como teléfono
+                    <TextField required label="Telefono" name="telefono" value={fono} onChange={handleInputChange} type="tel" // Establece el tipo de entrada como teléfono
                       InputProps={{
                         inputProps: {
                           pattern: "[0-9\\+]*",
                           maxLength: 12,
                         },
                       }} fullWidth sx={{ mt: 1 }} />
-                    <TextField label="Region" name="region" value={formulario.region} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
+                    <TextField required label="Region" name="region" value={formulario.region} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
                       inputProps: {
                         maxLength: 40,
 
                       }
                     }} />
-                    <TextField label="Ciudad" name="ciudad" value={formulario.ciudad} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
+                    <TextField required label="Ciudad" name="ciudad" value={formulario.ciudad} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
                       inputProps: {
                         maxLength: 40
                       }
                     }} />
-                    <TextField label="Comuna" name="comuna" value={formulario.comuna} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
+                    <TextField required label="Comuna" name="comuna" value={formulario.comuna} onChange={handleInputChange} fullWidth sx={{ mt: 1 }} InputProps={{
                       inputProps: {
                         maxLength: 40
                       }
                     }} />
-                    <TextField label="Dirección" name="direccion" value={formulario.direccion} onChange={handleInputChange} fullWidth sx={{ mt: 1 }}
+                    <TextField required label="Dirección" name="direccion" value={formulario.direccion} onChange={handleInputChange} fullWidth sx={{ mt: 1 }}
                       InputProps={{
                         inputProps: {
                           maxLength: 40
                         }
                       }} />
-                    <TextField label="Email" name="email" value={formulario.email} onChange={handleInputChange} fullWidth sx={{ mt: 1 }}
+                    <TextField required label="Email" name="email" value={formulario.email} onChange={handleInputChange} fullWidth sx={{ mt: 1 }}
                       InputProps={{
                         inputProps: {
                           maxLength: 40
