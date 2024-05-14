@@ -179,8 +179,8 @@ export const  ConfirmarPago = () => {
 
             //limpiar el carrito global 
             setCarrito([]);
-            localStorage.clear("carrito");
-
+            localStorage.removeItem("carrito");;
+            
             obtenerIdVenta();
             //redireccionar
             //navegar('/inicio');
@@ -211,7 +211,7 @@ export const  ConfirmarPago = () => {
                     <Box display={'flex'} justifyContent={'center'} mt={2} flexDirection={{ xs: 'column', lg: 'row' }} marginBottom={3}>
                         <Box width={{ xs: '100%', }} margin={{ lg: 1 }} marginBottom={{ xs: 1 }} padding={1}>
                             <FormControl component="fieldset">
-                                {mensaje === "Seleccione una opción" ? <Typography color='red' variant='h7' >Debe Marcar Una Opción</Typography> : <FormLabel component="legend">Selecciona casilla de correo</FormLabel>}
+                                {mensaje === "Seleccione una opción" ? <Typography color='red' variant='h7' >Debe Marcar Una Opción Y Llenar Los Campos</Typography> : <FormLabel component="legend">Selecciona casilla de correo</FormLabel>}
 
                                 <RadioGroup aria-label="casillaCorreo" name="casillaCorreo" value={casillaCorreo} onChange={handleCasillaChange}>
                                     <FormControlLabel value="Chile Express" control={<Radio />} label="Chile Express" />
@@ -259,9 +259,9 @@ export const  ConfirmarPago = () => {
                             <Typography component="p" margin={1} marginLeft={2}>
                                 Envio por Starken, el envio queda por pagar y se envia a la sucursal o direccion a domicilio
                             </Typography>
-                            <Typography component="p" margin={1} marginLeft={2} color={'red'}>
+                            {/* <Typography component="p" margin={1} marginLeft={2} color={'red'}>
                                 Si queda en blanco se tomara la Dirección agregada anteriormente
-                            </Typography>
+                            </Typography> */}
 
                             <Box width={{ xs: '100%', }} margin={{ lg: 1 }} marginBottom={{ xs: 1 }} padding={1}>
                                 <TextField

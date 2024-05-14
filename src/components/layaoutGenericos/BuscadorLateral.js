@@ -112,6 +112,7 @@ export const BuscadorLateral = ({ setQtPage, cantidadItem, setCantidadItem, edic
 
     return (
         <>
+
             <h2>Edicio {edicion}</h2>
             <h5> { cantidadItem  === 0 ? <h5>No se encuentran resultados</h5> : <h5>Resultados: {cantidadItem}</h5> } </h5>
             <Search className='search-input'>

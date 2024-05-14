@@ -9,6 +9,7 @@ import axios from 'axios';
 //importar para guardar las cookies
 //import Cookies from 'js-cookie';
 import { obtenerCookieToken } from '../src/helper/obtenerCookies';
+import { Cargando } from './components/utilidad/Cargando';
 
 function App() {
 
@@ -51,7 +52,7 @@ function App() {
       //console.log(cookiesToken.token);
       let user = localStorage.getItem('user');
       if (!user) {
-        
+
         setLoading(false);
         setSessionUser({});
         return false
@@ -95,7 +96,7 @@ function App() {
     };
 
     authUser();
-    
+
   }, []);
 
   useEffect(() => {
@@ -121,14 +122,14 @@ function App() {
     const dolarCarrito = async () => {
       try {
         // Obtenemos el valor del dólar
-        const dolar =   await obtenerValorDolar();
+        const dolar = await obtenerValorDolar();
 
         // Convertimos el valor del localStorage a número
         const valorDolarLocalStorage = parseFloat(localStorage.getItem('valorDolar'));
 
         // Verificamos si el valor del dólar existe en el local storage
         if (isNaN(valorDolarLocalStorage) || valorDolarLocalStorage !== parseFloat(dolar)) {
-          
+
           // Si es diferente, actualizamos el valor en el localStorage
           localStorage.setItem('valorDolar', dolar);
 
@@ -158,7 +159,7 @@ function App() {
   // esto se muestra mientras el loading este en false y cuando pase a true pasa al render de abajo
   // lo aplicamos porque el useEffect es asyncrono entonces nuestros estados no alcanzan a acutalizarse antes que se renderizen nuestros componentes de la app
   if (loading || sessionUser === null) {
-    return <p>Cargando...</p>;
+    return (<div><Cargando /></div>);
   }
 
   return (

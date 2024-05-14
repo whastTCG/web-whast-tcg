@@ -1,4 +1,5 @@
 import React from 'react'
+import ImagenesCarrusel from './layaoutGenericos/Carrusel/ImagenesCarrusel'
 
 
 export const Inicio = () => {
@@ -7,8 +8,8 @@ export const Inicio = () => {
   
   return (
     <>
-    <h1>hola guachos soy la pagina sin funciones actualizada 2.0</h1>
-
+    {/* <ImagenesCarrusel/> */}
+    Inicio
     </>
   )
 }

@@ -18,6 +18,7 @@ import { Context } from '../../../context/Context';
 import { listarGlobalPaginado } from '../../../helper/listarGlobalPagination/listarGlobalPag';
 import { NavLink, useNavigate } from 'react-router-dom';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import { Header } from '../header/Header';
 
 
 //import estilos
@@ -175,7 +176,9 @@ export default function PrimarySearchAppBar() {
                 />
               </Search>
 
-              <Box sx={{ flexGrow: "1" }} />
+              <Box sx={{ flexGrow: "1" }} >
+                <Header/>
+              </Box>
               <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
                 <NavLink
                   to="/cargar-estado-venta"
@@ -243,15 +246,15 @@ export default function PrimarySearchAppBar() {
                 </Search>
                 <Box sx={{ flexGrow: "1" }} />
                 <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
-                <NavLink
-                  to="/cargar-estado-venta"
-                  className="enlace-navbar"
-                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-                >
-                  <ShoppingBasketIcon sx={{ marginRight: 1 }} />
-                  Revisa tu pedido
-                </NavLink>
-              </Typography>
+                  <NavLink
+                    to="/cargar-estado-venta"
+                    className="enlace-navbar"
+                    style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                  >
+                    <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+                    Revisa tu pedido
+                  </NavLink>
+                </Typography>
                 <Box sx={{ display: "flex" }} >
                   <IconButton
                     size="large"

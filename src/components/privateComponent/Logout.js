@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Context } from '../../context/Context';
 //importar para guardar las cookies
 import { Global } from '../../helper/urlGlobales';
+import { Cargando } from '../utilidad/Cargando';
 
 export const Logout = () => {
 
@@ -54,13 +55,12 @@ export const Logout = () => {
 
     limpiarCookieToken();
     setCarrito([]);
-    console.log("gola")
     navegarLogin();
   }, []);
 
 
   return (
-    <>Cargandoo...</>
+    <><Cargando/></>
   )
 
 }

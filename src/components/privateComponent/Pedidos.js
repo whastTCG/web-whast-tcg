@@ -28,7 +28,7 @@ export const Pedidos = () => {
         const traerHistoriaPedidos = async () => {
             try {
                 const cookie = await obtenerCookieToken();
-                console.log(page)
+               
                 const response = await axios.get(Global.urlGlobal + `venta/listar-historial/pedidos?page=${page}`, {
                     headers: {
                         'Content-Type': "application/json",
@@ -62,7 +62,7 @@ export const Pedidos = () => {
     };
 
     if (loading) {
-        <Box><Cargando /></Box>
+       return <Box><Cargando /></Box>
     }
  
     return (

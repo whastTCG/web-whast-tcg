@@ -14,8 +14,8 @@ const InfoPostVenta = ({ codigoVenta, email }) => {
 
     return (
         <Container maxWidth="lg">
-            <Box my={4} sx={{ borderRadius: 2, boxShadow: 3 }} display={{ lg: 'flex' }}  >
-                <Card sx={{ margin: 1 }}>
+            <Box my={4} sx={{ justifyContent: 'space-around' }} display={{ lg: 'flex' }}  >
+            <Card sx={{ maxWidth: { xl: 500 }, borderRadius: 2, boxShadow: 3 }}>
                     <CardContent >
                         <Typography variant="h4" align="center" gutterBottom color="primary">
                             ¡Gracias por tu compra!
@@ -57,7 +57,7 @@ const InfoPostVenta = ({ codigoVenta, email }) => {
                         </Box>
                     </CardContent>
                 </Card>
-                <Card sx={{ margin: 1 }}>
+                <Card sx={{ maxWidth: { xl: 500 }, borderRadius: 2, boxShadow: 3 }}>
                     <CardContent >
                         <Typography variant="h4" align="center" gutterBottom color="primary">
                             Envío de Comprobante de Pago
@@ -76,7 +76,7 @@ const InfoPostVenta = ({ codigoVenta, email }) => {
                             <strong>Su pedido sera guardado hasta entonces</strong>
 
                         </Typography>
-                     
+
                     </CardContent>
                 </Card>
             </Box>

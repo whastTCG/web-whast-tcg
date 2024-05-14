@@ -25,14 +25,15 @@ export function BusquedaGeneral() {
 
     const { cantidadItem, setCantidadItem } = useContext(Context);
 
-    const { setCarrito, carrito } = useContext(Context);
+    const { setCarrito } = useContext(Context);
 
-    const { sessionUser } = useContext(Context);
+
 
     //estados para controlar mensaje de stock
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [mensajeAgregado, setMensajeAgregado] = useState(null);
     const [mensajeFueraDeStock, setMensajeFueraDeStock] = useState(null);
+    const [loading, setLoading] = useState(true);
 
 
     // const { parametros, setParametros } = useContext(Context);
@@ -86,12 +87,12 @@ export function BusquedaGeneral() {
         setQtPage(dato.pages)
         setCartasBLMR(dato.cartas);
         setCantidadItem(dato.total);
-
+        setLoading(false);
     };
 
     const abrirCarta = (e, idCarta) => {
         navegar('/carta/' + idCarta)
-        
+
     }
 
 
@@ -156,7 +157,12 @@ export function BusquedaGeneral() {
         return precioFormateado;
     };
 
-   
+
+    if (loading) {
+        return <div>
+            <Cargando />
+        </div>
+    }
 
     return (
         <Box marginTop={2} >

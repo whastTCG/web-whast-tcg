@@ -8,6 +8,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useNavigate } from 'react-router-dom';
 import { validarRut, validarTelefono, validarNombre } from '../../helper/validarFormularioEnvio';
 import { isValidEmail } from '../../helper/validarEmail';
+import { Cargando } from '../utilidad/Cargando';
 
 //import { getDollarExchangeRate } from '../../helper/UsdToCLP';
 
@@ -35,6 +36,7 @@ export const SeleccionarEnvio = () => {
   const [carritoInfo, setCarritoInfo] = useState([]);
   const [alertaVisible, setAlertaVisible] = useState('');
   const [fono, setFono] = useState('');
+  const [loadign, setLoading] = useState(true);
   const [formulario, setFormulario] = useState({
     nombreCompleto: '',
     rut: '',
@@ -67,10 +69,13 @@ export const SeleccionarEnvio = () => {
         const cookie = await obtenerCookieToken();
         const { listaEnvios } = await traerDireccionEnvio(cookie);
         setListaEnvioState(listaEnvios);
+        setLoading(false);
 
         //asignar automaticamente la primera direccion si la lista no esta vacia
         if (listaEnvios.length > 0) {
           setDireccionSeleccionada(listaEnvios[0]);
+        }else{
+          navegar("/agregar-datos-envio");
         }
       } catch (error) {
         console.error('Error al obtener los datos de dirección de envío', error);
@@ -284,11 +289,15 @@ export const SeleccionarEnvio = () => {
 
   const renderLog = () => {
     if (userLog === true) {
+
+      if (loadign) {
+        return <><Cargando /></>
+      }
       return (
-        <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center' }} >
+        <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'center' }} >
           <Box display="flex" justifyContent="center" mt={3} flexDirection={{ xs: 'column', lg: 'row' }}>
             {/* Columna izquierda */}
-            <Box width={{ xs: '100%', lg: 'auto' }} mb={{ xs: 2, lg: 0 }} justifyContent={'center'} flex={1}>
+            <Box width={{ xs: '100%', lg: 'auto' }} mb={{ xs: 2, lg: 0 }} justifyContent={'center'} flex={1} >
               <Typography variant="h5" sx={{ justifyContent: 'center', alignContent: 'center', display: 'flex' }}>Dirección de entrega  </Typography>
 
               {direccionSeleccionada && <AddressCard direccion={direccionSeleccionada} onEdit={() => handleEditarDireccion(direccionSeleccionada._id)} onDelete={handleBorrarDireccion} isSelected={true} />}
@@ -312,12 +321,12 @@ export const SeleccionarEnvio = () => {
             </Box>
 
             {/* Columna derecha */}
-            <Box width={{ xs: '100%', lg: '67%' }} pl={{ xs: 0, lg: 2 }} flex={1} >
+            <Box width={{ xs: 'auto', lg: 'auto' }} pl={{ xs: 0, lg: 2 }} flex={1} >
               <Box >
                 <Typography variant="h5" mt={1}>
                   Resumen
                 </Typography>
-                <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl: 530, lg: 200 }} height={{ xl: 300, lg: 270 }} sx={{ overflow: 'auto', boxShadow: 10, padding: 2 }}>
+                <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl:'xl', lg: 'lg' }} height={{ xl: 300, lg: 270 }} sx={{ overflow: 'auto', boxShadow: 10, padding: 2 }}>
                   {carritoInfo.map(item => {
                     return (
                       <Box key={item._id} >

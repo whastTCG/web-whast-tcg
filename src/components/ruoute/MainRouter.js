@@ -34,6 +34,7 @@ import RecuperarContrasena from '../Formularios/RecuperarContraseña';
 import { RecuperarContrasenaEmailToken } from '../Formularios/RecuperarContrasenaEmailToken'; 
 import { CargarEstadoVenta } from '../Formularios/CargarEstadoVenta';
 import { HistoriaDePedidos } from '../privateComponent/HistoriaDePedidos';
+import ImagenesCarrusel from '../layaoutGenericos/Carrusel/ImagenesCarrusel';
  
 
 
@@ -47,19 +48,20 @@ export const MainRouter = () => {
             <BrowserRouter>
 
                 <header className='header'>
-                    {/* Menu de navegacion */}
-                    <Header />
+                    {/* headder */}
+                    
                 </header>
 
                 <nav className='AppBar'>
                     {/* aqui va la barra de navegacion */}
                     <PrimarySearchAppBar />
-
+                    
                 </nav>
 
                 <div className='banner'>
                     {/* aqui va el banner */}
-                    <img src={banner} alt='banner' />
+                    {/* <img src={banner} alt='banner' /> */}
+                    <ImagenesCarrusel/>
 
                 </div>
 

@@ -15,6 +15,7 @@ import { SelectFiltro } from '../cargarCartas/SelectFiltro';
 
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import { Cargando } from '../utilidad/Cargando';
 
 export function Cartas() {
 
@@ -26,10 +27,10 @@ export function Cartas() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [mensajeAgregado, setMensajeAgregado] = useState(null);
     const [mensajeFueraDeStock, setMensajeFueraDeStock] = useState(null);
-
+    const [loading, setLoading] = useState(true);
     const { filtro } = useContext(Context);
 
-    const { sessionUser } = useContext(Context);
+  
 
     const { qtPage, setQtPage } = useContext(Context);
 
@@ -74,8 +75,8 @@ export function Cartas() {
             conseguirBusquedaLateral();
             //console.log(valorBusqueda + " soy el valor busqueda que existe")
         }
-
-    }, [page]);
+        
+    }, [page, edicion, valorBusqueda]);
 
 
 
@@ -84,6 +85,7 @@ export function Cartas() {
         setQtPage(dato.pages)
         setCartasBLMR(dato.cartas);
         setCantidadItem(dato.total);
+        setLoading(false);
     };
 
     const conseguirBusquedaLateral = async () => {
@@ -91,6 +93,7 @@ export function Cartas() {
         setQtPage(dato.pages)
         setCartasBLMR(dato.cartas);
         setCantidadItem(dato.total);
+        setLoading(false);
     };
 
     const abrirCarta = (e, idCarta) => {
@@ -161,10 +164,14 @@ export function Cartas() {
 
         return precioFormateado;
     };
-   
 
-    if (!cartasBLMR || !sessionUser) {
-        return <div>Cargando...</div>;
+
+    if (loading === true) {
+        return (
+            <div>
+                <Cargando />
+            </div>
+        );
     }
 
     return (
