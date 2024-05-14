@@ -74,7 +74,7 @@ export const SeleccionarEnvio = () => {
         //asignar automaticamente la primera direccion si la lista no esta vacia
         if (listaEnvios.length > 0) {
           setDireccionSeleccionada(listaEnvios[0]);
-        }else{
+        } else {
           navegar("/agregar-datos-envio");
         }
       } catch (error) {
@@ -326,7 +326,7 @@ export const SeleccionarEnvio = () => {
                 <Typography variant="h5" mt={1}>
                   Resumen
                 </Typography>
-                <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl:'xl', lg: 'lg' }} height={{ xl: 300, lg: 270 }} sx={{ overflow: 'auto', boxShadow: 10, padding: 2 }}>
+                <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl: 'xl', lg: 'lg' }} height={{ xl: 300, lg: 270 }} sx={{ overflow: 'auto', boxShadow: 10, padding: 2 }}>
                   {carritoInfo.map(item => {
                     return (
                       <Box key={item._id} >
@@ -359,7 +359,7 @@ export const SeleccionarEnvio = () => {
           <Container maxWidth="lg">
             <Box display="flex" justifyContent="center" mt={3} flexDirection={{ xs: 'column', lg: 'row' }}>
               {/* Columna izquierda */}
-              <Box width={{ xs: '100%', lg: '33%' }} mb={{ xs: 2, lg: 0 }} pr={{ xs: 0, lg: 2 }} >
+              <Box width={{ xs: '100%', lg: '33%' }} mb={{ xs: 2, lg: 0 }} pr={{ xs: 0, lg: 2 }} borderRadius={2} >
                 <Typography variant="h5" sx={{
                   marginLeft: { lg: 7.5, xl: 9 },
                   '@media (max-width: 1440px)': {
@@ -369,30 +369,6 @@ export const SeleccionarEnvio = () => {
                   Dirección de entrega
                 </Typography>
                 <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl: 530, lg: 600 }} height={{ xl: 450, lg: 450 }} sx={{ overflow: 'auto', }}>
-                  {/* Mostrar la alerta si es visible */}
-                  {alertaVisible === "errorNombre" ? <Alert severity='warning'>
-                    Ingrese el Nombre y Apellido
-                  </Alert> : ''
-                  }
-
-                  {alertaVisible === "errorRut" ? <Alert severity='warning'>
-                    Ingrese Un Rut Valido
-                  </Alert> : ''
-                  }
-
-                  {alertaVisible === "errorCampos" ? <Alert severity='warning'>
-                    Debe llenar todos los campos
-                  </Alert> : ''
-                  }
-
-                  {alertaVisible === "errorTelefono" ? <Alert severity='warning'>
-                    Ingrese un telefono Valido
-                  </Alert> : ''
-                  }
-                  {alertaVisible === "errorEmail" ? <Alert severity='warning'>
-                    Ingrese Un Correo Electronico Valido
-                  </Alert> : ''
-                  }
 
                   <form >
                     {/* Agrega los campos del formulario con manejo de eventos */}
@@ -443,6 +419,33 @@ export const SeleccionarEnvio = () => {
                       }} />
                     {/* ... otros campos del formulario ... */}
                   </form>
+                </Box>
+                <Box sx={{margin:1.3}}>
+                  {/* Mostrar la alerta si es visible */}
+                  {alertaVisible === "errorNombre" ? <Alert severity='warning'>
+                    Ingrese el Nombre y Apellido
+                  </Alert> : ''
+                  }
+
+                  {alertaVisible === "errorRut" ? <Alert severity='warning'>
+                    Ingrese Un Rut Valido
+                  </Alert> : ''
+                  }
+
+                  {alertaVisible === "errorCampos" ? <Alert severity='warning'>
+                    Debe llenar todos los campos
+                  </Alert> : ''
+                  }
+
+                  {alertaVisible === "errorTelefono" ? <Alert severity='warning'>
+                    Ingrese un telefono Valido
+                  </Alert> : ''
+                  }
+                  {alertaVisible === "errorEmail" ? <Alert severity='warning'>
+                    Ingrese Un Correo Electronico Valido
+                  </Alert> : ''
+                  }
+
                 </Box>
               </Box>
 

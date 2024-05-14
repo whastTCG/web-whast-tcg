@@ -23,6 +23,8 @@ import { Header } from '../header/Header';
 
 //import estilos
 import '../../../style/AppBarTcg.css';
+import { Badge } from '@mui/material';
+import { ShoppingBag } from '@mui/icons-material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -88,6 +90,9 @@ export default function PrimarySearchAppBar() {
 
   const { setValorBusqueda } = React.useContext(Context);
 
+  // Variables de estado
+  const { carrito } = React.useContext(Context);
+  const [hayElementosEnCarrito, setHayElementosEnCarrito] = React.useState(false);
   //const { parametros } = React.useContext(Context);
 
   const { setQtPage } = React.useContext(Context);
@@ -95,6 +100,16 @@ export default function PrimarySearchAppBar() {
   const { setCantidadItem } = React.useContext(Context);
 
   const navegar = useNavigate();
+
+  // Efecto para controlar cambios en el carrito
+  React.useEffect(() => {
+    // Verifica si el carrito tiene elementos
+    if (carrito.length > 0) {
+      setHayElementosEnCarrito(true);
+    } else {
+      setHayElementosEnCarrito(false);
+    }
+  }, [carrito]);
 
   React.useEffect(() => {
 
@@ -142,148 +157,215 @@ export default function PrimarySearchAppBar() {
   }
 
 
+
   //metodo de renderizar appbar ( son 2 appBar una para usuarios no logeados y otra para logeados)
-  const renderAppbar = () => {
-    if (userLog === false) {
-      return (
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-            <Toolbar>
-              <Navbar />
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: { xs: 'none', sm: 'block' } }}
-              >
-                <NavLink className="whast-tcg-icono" to="/inicio">
-                  <span>Whast TCG</span>
-                </NavLink>
-              </Typography>
+  // const renderAppbar = () => {
+  //   if (userLog === false) {
+  //     return (
+  //       <Box sx={{ flexGrow: 1 }}>
+  //         <AppBar position="static">
+  //           <Toolbar>
+  //             <Navbar />
+  //             <Typography
+  //               variant="h6"
+  //               noWrap
+  //               component="div"
+  //               sx={{ display: { xs: 'none', sm: 'block' } }}
+  //             >
+  //               <NavLink className="whast-tcg-icono" to="/inicio">
+  //                 <span>Whast TCG</span>
+  //               </NavLink>
+  //             </Typography>
 
-              {/* input de busqueda */}
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
+  //             {/* input de busqueda */}
+  //             <Search>
+  //               <SearchIconWrapper>
+  //                 <SearchIcon />
+  //               </SearchIconWrapper>
+  //               <StyledInputBase
 
-                  placeholder="Search…"
-                  inputProps={{ 'aria-label': 'search' }}
-                  name="busqueda"
-                  onChange={e => inputChange(e)}
+  //                 placeholder="Search…"
+  //                 inputProps={{ 'aria-label': 'search' }}
+  //                 name="busqueda"
+  //                 onChange={e => inputChange(e)}
 
-                />
-              </Search>
+  //               />
+  //             </Search>
 
-              <Box sx={{ flexGrow: "1" }} >
-                <Header/>
-              </Box>
-              <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
-                <NavLink
-                  to="/cargar-estado-venta"
-                  className="enlace-navbar"
-                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-                >
-                  <ShoppingBasketIcon sx={{ marginRight: 1 }} />
-                  Revisa tu pedido
-                </NavLink>
-              </Typography>
-              <Box sx={{ display: "flex" }} >
-                <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-haspopup="true"
-                  color="inherit"
-                  onClick={redirigirCarrito}
-                >
-                  <AddShoppingCartIcon />
+  //             <Box sx={{ flexGrow: "1" }} >
+  //               <Header/>
+  //             </Box>
+  //             <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
+  //               <NavLink
+  //                 to="/cargar-estado-venta"
+  //                 className="enlace-navbar"
+  //                 style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+  //               >
+  //                 <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+  //                 Revisa tu pedido
+  //               </NavLink>
+  //             </Typography>
+  //             <Box sx={{ display: "flex" }} >
+  //               <IconButton
+  //                 size="large"
+  //                 edge="end"
+  //                 aria-label="account of current user"
+  //                 aria-haspopup="true"
+  //                 color="inherit"
+  //                 onClick={redirigirCarrito}
+  //               >
+  //                 <AddShoppingCartIcon />
 
-                </IconButton>
+  //               </IconButton>
 
-                <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
-                  <NavbarLogin />
-                </Box>
-              </Box>
+  //               <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
+  //                 <NavbarLogin />
+  //               </Box>
+  //             </Box>
 
-            </Toolbar>
-          </AppBar>
+  //           </Toolbar>
+  //         </AppBar>
 
-        </Box>
-      )
-    } else {
+  //       </Box>
+  //     )
+  //   } else {
 
-      if (userLog === true) {
-        return (
-          <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-              <Toolbar>
-                <Navbar />
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}
-                >
-                  <NavLink className="whast-tcg-icono" to="/inicio">
-                    <span>Whast TCG </span>
-                  </NavLink>
-                </Typography>
-                {/* input de busqueda */}
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
+  //     if (userLog === true) {
+  //       return (
+  //         <Box sx={{ flexGrow: 1 }}>
+  //           <AppBar position="static">
+  //             <Toolbar>
+  //               <Navbar />
+  //               <Typography
+  //                 variant="h6"
+  //                 noWrap
+  //                 component="div"
+  //                 sx={{ display: { xs: 'none', sm: 'block' } }}
+  //               >
+  //                 <NavLink className="whast-tcg-icono" to="/inicio">
+  //                   <span>Whast TCG </span>
+  //                 </NavLink>
+  //               </Typography>
+  //               {/* input de busqueda */}
+  //               <Search>
+  //                 <SearchIconWrapper>
+  //                   <SearchIcon />
+  //                 </SearchIconWrapper>
+  //                 <StyledInputBase
 
-                    placeholder="Search…"
-                    inputProps={{ 'aria-label': 'search' }}
-                    name="busqueda"
-                    onChange={e => inputChange(e)}
+  //                   placeholder="Search…"
+  //                   inputProps={{ 'aria-label': 'search' }}
+  //                   name="busqueda"
+  //                   onChange={e => inputChange(e)}
 
-                  />
-                </Search>
-                <Box sx={{ flexGrow: "1" }} />
-                <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
-                  <NavLink
-                    to="/cargar-estado-venta"
-                    className="enlace-navbar"
-                    style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-                  >
-                    <ShoppingBasketIcon sx={{ marginRight: 1 }} />
-                    Revisa tu pedido
-                  </NavLink>
-                </Typography>
-                <Box sx={{ display: "flex" }} >
-                  <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-haspopup="true"
-                    color="inherit"
-                    onClick={redirigirCarrito}
-                  >
-                    <AddShoppingCartIcon />
+  //                 />
+  //               </Search>
+  //               <Box sx={{ flexGrow: "1" }} />
+  //               <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
+  //                 <NavLink
+  //                   to="/cargar-estado-venta"
+  //                   className="enlace-navbar"
+  //                   style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+  //                 >
+  //                   <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+  //                   Revisa tu pedido
+  //                 </NavLink>
+  //               </Typography>
+  //               <Box sx={{ display: "flex" }} >
+  //                 <IconButton
+  //                   size="large"
+  //                   edge="end"
+  //                   aria-label="account of current user"
+  //                   aria-haspopup="true"
+  //                   color="inherit"
+  //                   onClick={redirigirCarrito}
+  //                 >
+  //                   <AddShoppingCartIcon />
 
-                  </IconButton>
-                  <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
-                    <NavbarLogin />
-                  </Box>
-                </Box>
-              </Toolbar>
-            </AppBar>
+  //                 </IconButton>
+  //                 <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
+  //                   <NavbarLogin />
+  //                 </Box>
+  //               </Box>
+  //             </Toolbar>
+  //           </AppBar>
 
-          </Box>
-        )
-      }
-    }
-  }
+  //         </Box>
+  //       )
+  //     }
+  //   }
+  // }
 
 
   return (
     <>
-      {renderAppbar()}
+      {/* {renderAppbar()} */}
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Navbar />
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              <NavLink className="whast-tcg-icono" to="/inicio">
+                <span>Whast TCG</span>
+              </NavLink>
+            </Typography>
+
+            {/* input de busqueda */}
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                name="busqueda"
+                onChange={e => inputChange(e)}
+
+              />
+            </Search>
+
+            <Box sx={{ flexGrow: "1" }} >
+              <Header />
+            </Box>
+            <Typography variant="h6" noWrap component="div" sx={{ border: 'ButtonText', padding: 1, display: { xs: 'none', sm: 'block' } }}>
+              <NavLink
+                to="/cargar-estado-venta"
+                className="enlace-navbar"
+                style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+              >
+                <ShoppingBasketIcon sx={{ marginRight: 1 }} />
+                Revisa tu pedido
+              </NavLink>
+            </Typography>
+            <Box sx={{ display: "flex" }} >
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={redirigirCarrito}
+              >
+                <Badge badgeContent={carrito.length} color="error">
+                  <AddShoppingCartIcon />
+                </Badge>
+              </IconButton>
+
+              <Box sx={{ display: { xs: 'flex', md: 'flex' }, marginLeft: 3 }}>
+                <NavbarLogin />
+              </Box>
+            </Box>
+
+          </Toolbar>
+        </AppBar>
+
+      </Box>
     </>
 
   );
