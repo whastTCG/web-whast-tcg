@@ -295,10 +295,10 @@ export const SeleccionarEnvio = () => {
       }
       return (
         <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'center' }} >
-          <Box display="flex" justifyContent="center" mt={3} flexDirection={{ xs: 'column', lg: 'row' }}>
+          <Box display="flex" justifyContent="center" mt={3} flexDirection={{ xs: 'column', lg: 'row' }} sx={{boxShadow:3, borderRadius:3, marginBottom:3}}>
             {/* Columna izquierda */}
             <Box width={{ xs: '100%', lg: 'auto' }} mb={{ xs: 2, lg: 0 }} justifyContent={'center'} flex={1} >
-              <Typography variant="h5" sx={{ justifyContent: 'center', alignContent: 'center', display: 'flex' }}>Dirección de entrega  </Typography>
+              <Typography variant="h5" sx={{ justifyContent: 'center', display: 'flex' }}>Dirección de entrega  </Typography>
 
               {direccionSeleccionada && <AddressCard direccion={direccionSeleccionada} onEdit={() => handleEditarDireccion(direccionSeleccionada._id)} onDelete={handleBorrarDireccion} isSelected={true} />}
               <StyledDialog open={openDialog} onClose={handleCerrarDialog}>
@@ -321,9 +321,9 @@ export const SeleccionarEnvio = () => {
             </Box>
 
             {/* Columna derecha */}
-            <Box width={{ xs: 'auto', lg: 'auto' }} pl={{ xs: 0, lg: 2 }} flex={1} >
+            <Box width={{ xs: 'auto', lg: 'auto' }}  flex={1} marginRight={{lg:3}} paddingInline={2}>
               <Box >
-                <Typography variant="h5" mt={1}>
+                <Typography variant="h5" mt={0.5} display={'flex'} justifyContent={'center'}>
                   Resumen
                 </Typography>
                 <Box marginTop={3.5} boxShadow={2} bgcolor={'white'} borderRadius={2} p={1} maxWidth={{ xl: 'xl', lg: 'lg' }} height={{ xl: 300, lg: 270 }} sx={{ overflow: 'auto', boxShadow: 10, padding: 2 }}>
