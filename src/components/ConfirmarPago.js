@@ -206,10 +206,10 @@ export const  ConfirmarPago = () => {
         return (
             <>
 
-                <Container maxWidth='lg'>
+                <Container maxWidth='lg' sx={{boxShadow:3, borderRadius:2}}>
 
-                    <Box display={'flex'} justifyContent={'center'} mt={2} flexDirection={{ xs: 'column', lg: 'row' }} marginBottom={3}>
-                        <Box width={{ xs: '100%', }} margin={{ lg: 1 }} marginBottom={{ xs: 1 }} padding={1}>
+                    <Box display={'flex'} justifyContent={'center'} mt={2} flexDirection={{ xs: 'column', lg: 'row' }} marginBottom={3} sx={{border:'1px solid gray'}}>
+                        <Box width={{ xs: '100%', }} margin={{ lg:1 }} marginBottom={{ xs: 1 }} padding={1} >
                             <FormControl component="fieldset">
                                 {mensaje === "Seleccione una opción" ? <Typography color='red' variant='h7' >Debe Marcar Una Opción Y Llenar Los Campos</Typography> : <FormLabel component="legend">Selecciona casilla de correo</FormLabel>}
 

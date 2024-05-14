@@ -356,10 +356,15 @@ export const SeleccionarEnvio = () => {
     } else {
       return (
         <>
-          <Container maxWidth="lg">
-            <Box display="flex" justifyContent="center" mt={3} flexDirection={{ xs: 'column', lg: 'row' }}>
+          <Container maxWidth="lg" sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+          <Box display="flex" flexDirection={{ xs: 'column', lg: 'row' }} width={{ xs: '100%', lg: '80%' }} justifyContent="space-between">
+
+
               {/* Columna izquierda */}
-              <Box width={{ xs: '100%', lg: '33%' }} mb={{ xs: 2, lg: 0 }} pr={{ xs: 0, lg: 2 }} borderRadius={2} >
+
+              <Box width={{ xs: '100%', lg: '45%' }} mb={{ xs: 2, lg: 0 }} pr={{ xs: 0, lg: 2 }} borderRadius={2}>
+                
                 <Typography variant="h5" sx={{
                   marginLeft: { lg: 7.5, xl: 9 },
                   '@media (max-width: 1440px)': {
@@ -420,28 +425,28 @@ export const SeleccionarEnvio = () => {
                     {/* ... otros campos del formulario ... */}
                   </form>
                 </Box>
-                <Box sx={{margin:1.3}}>
+                <Box sx={{ margin: 1.3 }}>
                   {/* Mostrar la alerta si es visible */}
-                  {alertaVisible === "errorNombre" ? <Alert severity='warning'>
+                  {alertaVisible === "errorNombre" ? <Alert severity='error'>
                     Ingrese el Nombre y Apellido
                   </Alert> : ''
                   }
 
-                  {alertaVisible === "errorRut" ? <Alert severity='warning'>
+                  {alertaVisible === "errorRut" ? <Alert severity='error'>
                     Ingrese Un Rut Valido
                   </Alert> : ''
                   }
 
-                  {alertaVisible === "errorCampos" ? <Alert severity='warning'>
+                  {alertaVisible === "errorCampos" ? <Alert severity='error'>
                     Debe llenar todos los campos
                   </Alert> : ''
                   }
 
-                  {alertaVisible === "errorTelefono" ? <Alert severity='warning'>
+                  {alertaVisible === "errorTelefono" ? <Alert severity='error'>
                     Ingrese un telefono Valido
                   </Alert> : ''
                   }
-                  {alertaVisible === "errorEmail" ? <Alert severity='warning'>
+                  {alertaVisible === "errorEmail" ? <Alert severity='error'>
                     Ingrese Un Correo Electronico Valido
                   </Alert> : ''
                   }
